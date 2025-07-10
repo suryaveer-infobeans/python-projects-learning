@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Failure{% endblock %}
+
+{% block content %}
+    <div class="login-failure-container">
+        <h2>Login Failed</h2>
+        <p>Invalid username or password. Please try again.</p>
+        <a href="/login">Go back to Login</a>
+    </div>
+    {% for message in get_flashed_messages() %}
+        <div class="flash-message">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
