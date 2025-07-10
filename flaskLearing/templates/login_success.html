@@ -1,0 +1,13 @@
+<!--login_success.html-->
+{% extends 'base.html' %} 
+
+{% block title %}Login Success{% endblock %}
+
+{% block content %}
+    <div class="login-success-container">
+        <h2>Login Successful!</h2>
+        <p>Welcome, {{ username }}!</p>
+        <a href="/">Go to Home</a> | 
+        <a href="/logout">Logout</a>
+    </div>
+{% endblock %}
