@@ -1,0 +1,116 @@
+
+//// UNDROP objects ////
+
+
+// Setting up table
+
+CREATE OR REPLACE TABLE OUR_FIRST_DB.public.test (
+   id int,
+   first_name string,
+  last_name string,
+  email string,
+  gender string,
+  Job string,
+  Phone string);
+    
+
+COPY INTO OUR_FIRST_DB.public.test
+from @MANAGE_DB.external_stages.time_travel_stage
+files = ('customers.csv');
+
+SELECT * FROM OUR_FIRST_DB.public.test;
+
+
+// Use-case: Update data (by mistake)
+
+
+UPDATE OUR_FIRST_DB.public.test
+SET LAST_NAME = 'Tyson';
+
+
+UPDATE OUR_FIRST_DB.public.test
+SET JOB = 'Data Analyst';
+
+SELECT * FROM OUR_FIRST_DB.public.test before (statement => '01ab3a59-0001-0861-0003-a4c6000310d6');
+
+
+// // // Restoring (Good method)
+
+CREATE OR REPLACE TABLE OUR_FIRST_DB.public.test_backup as
+SELECT * FROM OUR_FIRST_DB.public.test before (statement => '01ab3a59-0001-079e-0003-a4c60002d0ee');
+
+TRUNCATE OUR_FIRST_DB.public.test;
+
+INSERT INTO OUR_FIRST_DB.public.test
+SELECT * FROM OUR_FIRST_DB.public.test_backup;
+
+
+SELECT * FROM OUR_FIRST_DB.public.test ;
+
+
+//// UNDROP preparation ////
+           
+// Setting up table
+
+CREATE OR REPLACE STAGE MANAGE_DB.external_stages.time_travel_stage
+    URL = 's3://data-snowflake-fundamentals/time-travel/'
+    file_format = MANAGE_DB.file_formats.csv_file;
+    
+
+CREATE OR REPLACE TABLE OUR_FIRST_DB.public.customers (
+   id int,
+   first_name string,
+  last_name string,
+  email string,
+  gender string,
+  Job string,
+  Phone string);
+    
+
+COPY INTO OUR_FIRST_DB.public.customers
+from @MANAGE_DB.external_stages.time_travel_stage
+files = ('customers.csv');
+
+SELECT * FROM OUR_FIRST_DB.public.customers;
+
+
+
+// UNDROP command - Tables
+
+DROP TABLE OUR_FIRST_DB.public.customers;
+
+SELECT * FROM OUR_FIRST_DB.public.customers;
+
+UNDROP TABLE OUR_FIRST_DB.public.customers;
+
+
+// UNDROP command - Schemas
+
+DROP SCHEMA OUR_FIRST_DB.public;
+
+SELECT * FROM OUR_FIRST_DB.public.customers;
+
+UNDROP SCHEMA OUR_FIRST_DB.public;
+
+
+SELECT * FROM customers;
+
+// UNDROP command - Database
+
+DROP DATABASE OUR_FIRST_DB;
+
+SELECT * FROM OUR_FIRST_DB.public.customers;
+
+UNDROP DATABASE OUR_FIRST_DB;
+
+
+
+
+// // // Undroping a with a name that already exists
+SELECT * FROM OUR_FIRST_DB.public.customers;
+
+UNDROP table OUR_FIRST_DB.public.customers;
+
+ALTER TABLE OUR_FIRST_DB.public.customers
+RENAME TO OUR_FIRST_DB.public.customers_new;
+

@@ -1,0 +1,70 @@
+// Reset table
+
+CREATE OR REPLACE TABLE OUR_FIRST_DB.PUBLIC.ORDERS (
+	ORDER_ID VARCHAR (30),
+	AMOUNT INT,
+	PROFIT INT,
+	QUANTITY INT,
+	CATEGORY VARCHAR(30),
+	SUBCATEGORY VARCHAR(30));
+
+// Insert single row
+INSERT INTO OUR_FIRST_DB.PUBLIC.ORDERS
+VALUES (1,0,0,0, 'None','None');
+
+
+SELECT * FROM OUR_FIRST_DB.PUBLIC.ORDERS;
+
+// Insert multiple rows
+INSERT INTO OUR_FIRST_DB.PUBLIC.ORDERS
+VALUES 
+(2,12,4,1, 'Garden','Flowers'),
+(3,15,6,2, 'House','Kitchen'),
+(4,11,2,1, 'House','Sleeping');
+
+SELECT * FROM OUR_FIRST_DB.PUBLIC.ORDERS;
+
+
+// Insert into specific columns
+INSERT INTO OUR_FIRST_DB.PUBLIC.ORDERS
+VALUES 
+(2,'Flowers'),
+(3,'Kitchen'),
+(4,'Sleeping');
+
+INSERT INTO OUR_FIRST_DB.PUBLIC.ORDERS (ORDER_ID, SUBCATEGORY)
+VALUES 
+(2,'Flowers'),
+(3,'Kitchen'),
+(4,'Sleeping');
+
+INSERT INTO OUR_FIRST_DB.PUBLIC.ORDERS (ORDER_ID, SUBCATEGORY)
+VALUES 
+(2,'Flowers'),
+(3,'Kitchen'),
+(4,'Sleeping');
+
+INSERT INTO OUR_FIRST_DB.PUBLIC.ORDERS (ORDER_ID, SUBCATEGORY)
+VALUES 
+(2,'Flowers'),
+(3,'Kitchen'),
+(4,'Sleeping');
+
+//INSERT OVERWRITE - Truncates the table
+INSERT OVERWRITE INTO OUR_FIRST_DB.PUBLIC.ORDERS (ORDER_ID, SUBCATEGORY)
+VALUES 
+(20,'Flowers'),
+(30,'Kitchen'),
+(40,'Sleeping');
+
+UPDATE OUR_FIRST_DB.PUBLIC.ORDERS
+SET ORDER_ID=1
+WHERE ORDER_ID=20;
+
+// Truncate (removes all data in the table)
+
+TRUNCATE TABLE OUR_FIRST_DB.PUBLIC.ORDERS;
+
+// Drop Table
+DROP TABLE OUR_FIRST_DB.PUBLIC.ORDERS;
+

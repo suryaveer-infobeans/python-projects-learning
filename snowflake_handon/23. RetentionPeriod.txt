@@ -1,0 +1,31 @@
+//// RETENTION PERIOD ////
+
+show tables like '%CUSTOMERS%';
+
+// Change retention period
+
+alter table OUR_FIRST_DB.public.customers 
+set data_retention_time_in_days = 0;
+
+
+CREATE OR REPLACE TABLE OUR_FIRST_DB.public.customers (
+   id int,
+   first_name string,
+  last_name string,
+  email string,
+  gender string,
+  Job string,
+  Phone string);
+ 
+
+  show tables like '%CUSTOMERS%';
+
+  // Drop and undrop table
+  drop table our_first_db.public.customers;
+  undrop table our_first_db.public.customers;
+
+  // Alter retention period
+  alter table UR_FIRST_DB.public.customers_example 
+  set data_retention_period_in_days = 0;
+
+  alter account set data_retention_time_in_days = 1;

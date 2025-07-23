@@ -1,0 +1,42 @@
+-- Use parse_json to interprete a string as JSON document ---
+SELECT parse_json(' { "key1": "value1", "key2": "value2" } ');
+
+
+CREATE OR REPLACE TABLE semi_structured (data variant);
+
+-- Insert data using PARSE_JSON
+INSERT INTO semi_structured SELECT parse_json(' { "key1": "value1", "key2": "value2" } ');
+
+-- Query from table
+SELECT DATA:key1 FROM semi_structured
+
+
+-- Query data
+SELECT * FROM OUR_FIRST_DB.PUBLIC.JSON_RAW;
+
+-- Insert more data into table
+INSERT INTO OUR_FIRST_DB.PUBLIC.JSON_RAW SELECT (parse_json(' 
+ {   "id":9,
+     "first_name":"Kelcey",
+     "last_name":"Pavlenko",
+     "gender":"Male",
+     "city":"Zhuyeping",
+     "job":{"title":"Pharmacist","salary":31100},
+     "spoken_languages":["Nepali","English"]},
+ '));
+
+ 
+SELECT 
+    RAW_FILE:id::int as id,  
+    RAW_FILE:first_name::STRING as first_name,
+    VALUE::STRING as prev_company
+FROM OUR_FIRST_DB.PUBLIC.JSON_RAW
+,TABLE(flatten ( input => RAW_FILE:prev_company ));
+
+-- lateral flatten
+SELECT 
+    RAW_FILE:id::int as id,  
+    RAW_FILE:first_name::STRING as first_name,
+    VALUE::STRING as prev_company
+FROM OUR_FIRST_DB.PUBLIC.JSON_RAW
+,lateral flatten ( input => RAW_FILE:prev_company );

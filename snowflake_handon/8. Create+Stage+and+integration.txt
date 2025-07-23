@@ -1,0 +1,48 @@
+USE DATABASE MANAGE_DB;
+
+create or replace stage manage_db.public.stage_azure
+    URL = 'azure://<your-container-url>';
+   
+
+-- list files
+LIST @manage_db.public.stage_azure;
+
+-- create integration object that contains the access information
+CREATE OR REPLACE STORAGE INTEGRATION azure_integration
+  TYPE = EXTERNAL_STAGE
+  STORAGE_PROVIDER = AZURE
+  ENABLED = TRUE
+  AZURE_TENANT_ID =  'ef058d6e-fb4d-41fa-b90b-067b342605c3'
+  STORAGE_ALLOWED_LOCATIONS = ( 'https://<your-container-url>');
+
+  
+  
+-- Describe integration object to provide access
+DESC STORAGE integration azure_integration;
+
+---- Create file format & stage objects ----
+
+-- create file format
+create or replace file format manage_db.public.fileformat_azure
+    TYPE = CSV
+    FIELD_DELIMITER = ','
+    SKIP_HEADER = 1;
+
+-- create stage object
+create or replace stage manage_db.public.stage_azure
+    STORAGE_INTEGRATION = azure_integration
+    URL = 'https://<your-container-url>'
+    FILE_FORMAT = fileformat_azure;
+    
+
+-- list files
+LIST @snowpipe.public.stage_azure;
+
+
+
+create or replace stage manage_db.public.stage_azure
+    URL = 'https://<your-container-url>';
+   
+
+-- list files
+LIST @manage_db.public.stage_azure;
