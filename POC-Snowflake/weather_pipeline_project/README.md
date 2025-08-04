@@ -8,46 +8,108 @@ This project demonstrates a complete ETL (Extract-Transform-Load) data pipeline 
 
 ## 🔍 Project Scope
 
-### ✔️ Data Ingestion
-- Ingests weather data from a **CSV file** (extensible to JSON/XML).
-- Supports local or cloud storage sources (S3, etc.).
+### ✔️ 1. Data Ingestion
 
-### ✔️ Data Processing with Python
-- Parses and cleans raw files using `pandas`.
-- Removes nulls and standardizes formats.
-- Converts data into a structured format aligned with reporting schema.
+- Reads weather data from a **CSV file** (extensible to JSON/XML).
+- Supports local file system and cloud sources (e.g., AWS S3).
 
-### ✔️ Load into Snowflake
-- Uses `snowflake-connector-python` to connect.
-- Creates table if not exists.
-- Loads transformed data into Snowflake using `INSERT` queries (or can be upgraded to `COPY INTO`).
+### ✔️ 2. Data Processing with Python
 
-### ✔️ Reporting Layer
-- Generates Snowflake **views** to support analytical queries.
-- Optional: Includes a Plotly Dash dashboard to visualize data.
+- Cleans and transforms raw data using `pandas`.
+- Handles nulls, missing values, and standardizes formats.
+- Converts data into a structured format aligned with a reporting schema.
 
-### ✔️ Automation (Optional)
-- Can schedule the ETL pipeline using `cron` or `schedule`.
-- Adds logging and error handling.
+### ✔️ 3. Load into Snowflake
+
+- Uses `snowflake-connector-python` and `snowflake.snowpark` to connect.
+- Auto-creates the target table if it doesn’t exist.
+- Loads transformed data using `write_pandas` or standard `INSERT` queries.
+- Supports schema evolution and proper type casting (e.g., `DATE` fields).
+
+### ✔️ 4. Reporting Layer
+
+- Creates **views** in Snowflake to simplify analytical queries.
+- Optional: Interactive dashboard built with **Plotly Dash** for visualizing weather trends.
+
+### ✔️ 5. Automation & Logging *(Optional)*
+
+- Supports scheduling with `cron` or Python’s `schedule` module.
+- Includes structured logging and error handling for observability.
 
 ---
 
 ## 📁 Folder Structure
 
+```bash
 weather_pipeline_project/
-├── data/
-│ └── sample_weather_data.csv
-├── etl/
-│ └── weather_etl.py
 ├── config/
-│ └── snowflake_config.py
-├── snowflake/
-│ ├── create_schema.sql
-│ ├── create_table.sql
-│ └── create_views.sql
+│   └── snowflake_config.py         # Snowflake connection config (uses .env)
+├── data/
+│   └── sample_weather_data.csv     # Sample raw weather data
+├── etl/
+│   └── weather_etl.py              # Main ETL script
 ├── dashboard/
-│ └── app.py
+│   └── app.py                      # Dash dashboard code
+├── snowflake/
+│   ├── create_schema.sql           # Schema creation SQL
+│   ├── create_table.sql            # Table DDL
+│   └── create_views.sql            # Reporting views
 ├── logs/
-│ └── etl.log
-├── requirements.txt
-└── README.md
+│   └── etl.log                     # ETL logs
+├── .env                                # Environment variables (excluded in .gitignore)
+├── requirements.txt                    # Python dependencies
+└── README.md                       # Project documentation
+```
+
+---
+
+## 🔧 Setup Instructions
+
+### 1. 📦 Install Requirements
+
+```bash
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### 2. 🛠️ Set up `.env`
+
+Create a `.env` file in the root directory:
+
+```ini
+SNOWFLAKE_ACCOUNT=your_account_id
+SNOWFLAKE_USER=your_username
+SNOWFLAKE_PASSWORD=your_password
+SNOWFLAKE_ROLE=SYSADMIN
+SNOWFLAKE_WAREHOUSE=COMPUTE_WH
+SNOWFLAKE_DATABASE=WEATHER_DB
+SNOWFLAKE_SCHEMA=PUBLIC
+```
+
+### 3. 🏃‍♂️ Run ETL
+
+```bash
+python etl/weather_etl.py
+```
+
+### 4. 📊 Launch Dashboard
+
+```bash
+python dashboard/app.py
+```
+
+Open in browser: [http://localhost:8050](http://localhost:8050)
+
+---
+
+## 📈 Example Output
+
+- **Table:** `WEATHER_DATA`
+- **Views:** `vw_daily_temperature`, `vw_average_humidity`, etc.
+- **Dashboard:** Interactive graphs showing weather trends by station and date.
+
+---
+
+
+
