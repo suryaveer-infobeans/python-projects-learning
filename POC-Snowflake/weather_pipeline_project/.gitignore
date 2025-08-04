@@ -1,0 +1,49 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual Environment
+venv/
+.env
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
+logs/
+
+# Data
+*.csv
+*.json
+*.xml
+data/
+
+# Dash cache
+__dash__/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# Dependency Files
+*.egg-info/
+dist/
+build/
+
+# Coverage / Testing
+.coverage
+htmlcov/
+.cache/
+
+# Compiled Files
+*.pyd
+*.pyo
+
+# Python Env Files
+.env.*
